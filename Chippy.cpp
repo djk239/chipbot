@@ -1,3 +1,21 @@
+/*#######################################################
+DALE KING ~ Chippy, the chipotle chat bot.
+
+Current functionalities: Talk to chippy about chipotle's nutritonal facts
+                         Talk to chippy, creating your own bowl and learn about the nutrtional facts
+                         Have chippy surprise you with a bowl just for you! and learn about the nutritonal facts
+
+To be added: Talk to chippy about chiptole's "culture"
+             Misspelling check
+             Add other entrees other than bowl. (OBJECT -> ENTREE -> BOWL -> ITEM) (highearcy)
+             
+
+
+#######################################################*/
+
+
+
+
 #include <iostream>
 #include <string>
 #include <cstdlib> 
@@ -9,7 +27,7 @@
 
 using namespace std;
 
-void randomizer();
+Bowl randomizer();
 Bowl creator();
 void perfectEntree();
 void nutrtionInfo(string tm);
@@ -143,6 +161,13 @@ int main()
                 cout << "Great choice! Here's your bowl's nutrition:\n";
                 cout << "Your bowl has " << userBowl.getCal() << " calories, " << userBowl.getFat() << " grams of fat, " << userBowl.getCarbs() << " grams of carbs, and " << userBowl.getProtien() << " grams of protien.";
             }
+
+            if(v[i] == "surprise")
+            {
+                cout << "Heres what I've come up with for you:";
+                Bowl randomBowl = randomizer();
+                cout << "\nYour bowl has " << randomBowl.getCal() << " calories, " << randomBowl.getFat() << " grams of fat, " << randomBowl.getCarbs() << " grams of carbs, and " << randomBowl.getProtien() << " grams of protien.";
+            }
         }
     } 
     
@@ -150,7 +175,7 @@ int main()
 }
 
 
-void randomizer()
+Bowl randomizer()
 {
     //Generate random seed
     srand((unsigned)time(0)); 
@@ -173,22 +198,26 @@ void randomizer()
         bool isInBowl = false;
         for (int i = 0; i < 20; i++)
         {
+            //generates a number of ingredients MAX for a random bowl
             int k = 0;
             k = (rand()%20)+1; 
-            bool it = false;
             for(int j = 0; j < numIngredients; j++)
             {
+                //
                 if(item.name == bowl.ingredients[j].name)
                 {
                     isInBowl = true;
                 }
+                //keeps track of the number of meats in the bowl, allowing for max 2
                 if(bowl.ingredients[j].category == 3)
                 {
                     numMeats++;
                 }
             }
+            //if the item is in the bowl, find a new item
             if(isInBowl)
             continue;
+            //not in the bowl? add the item and continue to generate the next
             else
             {
                 if(numMeats >= 2 && item.category == 3)
@@ -204,14 +233,16 @@ void randomizer()
     }
 
 
-    //prints bowl
+    //prints bowl ingredients
     for(int i = 0; i < numIngredients; i++)
     {
         if(bowl.ingredients[i].name != "")
         {
-            cout << "\n" << bowl.ingredients[i].name << " " << "" << " " << bowl.ingredients[i].category;
+            cout << "\n\t" << bowl.ingredients[i].name;
         }
     }
+    //returns bowl full of items
+    return bowl;
 
 
     
